@@ -18,7 +18,7 @@ def display_text(disp, text, *args):
     image = Image.new('1', (width, height))
     draw = ImageDraw.Draw(image)
 
-    font = ImageFont.truetype("./ARIALUNI.TTF", FONT_SIZE)
+    font = ImageFont.truetype("./static/ARIALUNI.TTF", FONT_SIZE)
 
     draw.rectangle((0, 0, width-1, height-1), outline=0, fill=0)
 
