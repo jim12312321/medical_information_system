@@ -5,11 +5,11 @@ import time
 
 def display_text(disp, text, *args):
     if len(args) < 2:
-        FONT_SIZE = 15
+        FONT_SIZE = 12
     elif len(args) == 2:
-        FONT_SIZE = 10
-    else:
         FONT_SIZE = 8
+    else:
+        FONT_SIZE = 6
 
     width = disp.width
     height = disp.height
@@ -29,5 +29,5 @@ def display_text(disp, text, *args):
             draw.text((0, (i + 1) * FONT_SIZE-1), item, font=font, fill=255)
 
     disp.image(image)
-    disp.display()
-    time.sleep(0.2)
+    disp.show()
+    #time.sleep(0.2)

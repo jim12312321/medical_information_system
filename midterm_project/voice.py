@@ -67,9 +67,10 @@ def record_speech():
 				print('錄音中: %.02f 秒 [按下按鈕停止錄音]' % duration)
 				time.sleep(0.5)
 		
-		record_file(Lab, filename='recording.wav', wait=wait, filetype='wav')
+		record_file(Lab, filename='./static/recording.wav', wait=wait, filetype='wav')
 
-def chinese_speech_to_text(wav_file):
+def chinese_speech_to_text():
+    wav_file = './static/recording.wav'
     r = sr.Recognizer()
     with sr.WavFile(wav_file) as source:
         audio = r.record(source)
@@ -80,8 +81,8 @@ def chinese_speech_to_text(wav_file):
         print("Could not understand audio:" , wav_file)
         return None
 
-def chinese_text_to_speech(text, output_file):
+def chinese_text_to_speech(text):
     tts = gTTS(text = text, lang = 'zh-tw')
-    tts.save(output_file)
-    print("Result saved at {}.".format(output_file))
+    tts.save("./static/output.mp3")
+    os.system("mpg321 -q ./static/output.mp3")
     return
