@@ -24,44 +24,54 @@ chatbot = None
 def main():
     global started
     while(True):
-        if started == False:
-            dist = sensor.distance()
-            if(dist < 30):
-                prompt = "機器人開始"
-                display.display_text(disp, prompt)
-                chatbot = Chatbot(disp)
-                chatbot.start()
-                started = True
+        try:
+            if started == False:
+                dist = sensor.distance()
+                if(dist < 30):
+                    prompt = "機器人開始"
+                    display.display_text(disp, prompt)
+                    chatbot = Chatbot(disp)
+                    chatbot.start()
+                    started = True
+                else:
+                    prompt = "距離太遠\n更靠近感應器"
+                    display.display_text(disp, prompt)
             else:
-                prompt = "距離太遠\n更靠近感應器"
+                prompt = "請選擇食品營養\n找診所或是\n每日推薦攝取熱量"
                 display.display_text(disp, prompt)
-        else:
-            prompt = "選單"
-            prompt = "請選擇食品營養\n找診所或是\n每日推薦攝取熱量"
-            display.display_text(disp, prompt)
-            voice.chinese_text_to_speech(prompt)
+                voice.chinese_text_to_speech(prompt)
+                voice.record_speech()
+                user_response = voice.chinese_speech_to_text()
+                print("使用者說: {}".format(user_response))
+                if "食品" in user_response or "營養" in user_response:
+                    chatbot.food_detail()
+                elif "找" in user_response or "診所" in user_response:
+                    display.display_text(disp, "請告知搜尋的地區")
+                    voice.chinese_text_to_speech("請告知搜尋的地區")
+                    voice.record_speech()
+                    loc = voice.chinese_speech_to_text()
+                    print("使用者說: {}".format(loc))
+                    display.display_text(disp, "請說出您的症狀")
+                    voice.chinese_text_to_speech("請說出您的症狀")
+                    voice.record_speech()
+                    syns = voice.chinese_speech_to_text()
+                    print("使用者說: {}".format(syns))
+                    chatbot.disease_detail(loc,syns)
+                elif "建議" in user_response or "熱量" in user_response:
+                    chatbot.health_detail()
+                else:
+                    display.display_text(disp, "尚未支援此項功能")
+                    voice.chinese_text_to_speech("尚未支援此功能")
+        except:
+            display.display_text(disp, "出現未預期的錯誤\n要繼續還是結束呢?")
+            voice.chinese_text_to_speech("出現未預期的錯誤\n要繼續還是結束呢?")
             voice.record_speech()
             user_response = voice.chinese_speech_to_text()
             print("使用者說: {}".format(user_response))
-            if "食品" in user_response or "營養" in user_response:
-                chatbot.food_detail()
-            elif "找" in user_response or "診所" in user_response:
-                display.display_text(disp, "請告知搜尋的地區")
-                voice.chinese_text_to_speech("請告知搜尋的地區")
-                voice.record_speech()
-                loc = voice.chinese_speech_to_text()
-                print("使用者說: {}".format(loc))
-                display.display_text(disp, "請說出您的症狀")
-                voice.chinese_text_to_speech("請說出您的症狀")
-                voice.record_speech()
-                syns = voice.chinese_speech_to_text()
-                print("使用者說: {}".format(syns))
-                chatbot.disease_detail(loc,syns)
-            elif "建議" in user_response or "熱量" in user_response:
-                chatbot.health_detail()
-            else:
-                display.display_text(disp, "尚未支援此項功能")
-                voice.chinese_text_to_speech("尚未支援此功能")
+            if "結束" in user_response:
+                display.display_text(disp, "歡迎下次使用")
+                voice.chinese_text_to_speech("歡迎下次使用")
+                break
 
 if __name__ == '__main__':
     main()

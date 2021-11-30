@@ -18,7 +18,13 @@ class Food():
         results = soup.find_all("a")
         for result in results:
             if self.food in result.getText():
-                self.food_dict[result.getText()] = result.get("href")
+                current_food = result.getText()
+                try:
+                    current_food=current_food.replace('(','')
+                    current_food=current_food.replace(')','')
+                except:
+                    pass
+                self.food_dict[current_food] = result.get("href")
         return self.food_dict
     
     #該食物的營養資訊
