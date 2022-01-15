@@ -152,4 +152,5 @@ cython_debug/
 #.idea/
 
 # Don't upload saved media
-upload
+*.mp3
+*.wav
