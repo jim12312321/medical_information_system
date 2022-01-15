@@ -4,6 +4,8 @@ from werkzeug.utils import secure_filename
 
 # Custom import modules
 from stt import speech_to_text
+from tts import hash_sha256
+from utils import response_generate
 
 UPLOAD_FOLDER = "./upload"
 
@@ -22,13 +24,11 @@ def upload():
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            response = speech_to_text(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            
-            return_dict = {}
-            return_dict["result"] = ""
-            return_dict["source_stt"] = response
-            return_dict["source"] = url_for("get_recording", filename=filename, _external=True)
-            return_dict["responseMedia"] = ""
+            source_text = speech_to_text(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+
+            return_dict = response_generate('', url_for("get_recording", filename=filename, _external=True),
+                                            source_text, '')
             return return_dict
     else:
         return '''
