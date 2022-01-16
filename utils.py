@@ -82,13 +82,25 @@ def respond_decide(source_text):
     elif "火災" in source_text:
         # 火災現場
         if "受困" in source_text:
-            return "受困"
+            if "有人" in source_text:
+                return "已確認有人受困於現場"
+            else:
+                return "已確認現場無人受困"
         elif "易燃物" in source_text:
-            return "易燃物"
+            if "沒有" in source_text or "無" in source_text:
+                return "已確認現場有易燃物，若有辦法請嘗試移除現場的易燃物"
+            else:
+                return "已確認現場無易燃物"
         elif "緊急出口" in source_text:
-            return "緊急出口"
+            if "沒有" in source_text or "無" in source_text:
+                return "已確認現場無緊急出口，請確保現場還有其他可使用的出入口供人員逃生"
+            else:
+                return "已確認現場有緊急出口，若有人受困於內請確認人員是否有順利逃生"
         elif "緩降機" in source_text:
-            return "緩降機"
+            if "沒有" in source_text or "無" in source_text:
+                return "已確認現場無緩降機"
+            else:
+                return "已確認現場有緩降機，請確認是否有人員緩降逃生"
         else:
             # 無法判斷
             return "無法判斷您的狀況，轉由接線生接聽"
