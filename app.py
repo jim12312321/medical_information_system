@@ -17,8 +17,8 @@ app.config['MAX_CONTENT_LENGTH'] = (1024 * 1024 * 32)
 def index():
     return "index"
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
+@app.route('/upload/<senario>', methods=['GET', 'POST'])
+def upload(senario):
     if request.method == 'POST':
         file = request.files['file']
         if file:

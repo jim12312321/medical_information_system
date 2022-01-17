@@ -1,5 +1,11 @@
-def respond_decide(source_text):
-    if "車禍" in source_text:
+def respond_decide(source_text, senario):
+    # Senario
+    # * crash
+    # * faint
+    # * fire
+    # * init
+    if senario == 'crash':
+        # 車禍
         if "安全處" in source_text:
             if "都在" in source_text:
                 # 車禍，人員都在安全處
@@ -34,7 +40,7 @@ def respond_decide(source_text):
         else:
             # 無法判斷
             return "無法判斷您的狀況，轉由接線生接聽"
-    elif "昏迷" in source_text:
+    elif senario == 'faint':
         # 昏迷/失去意識
         if "呼吸" in source_text or "心跳" in source_text:
             if "喪失" in source_text or "無" in source_text or "沒有" in source_text:
@@ -79,7 +85,7 @@ def respond_decide(source_text):
         else:
             # 無法判斷
             return "無法判斷您的狀況，轉由接線生接聽"
-    elif "火災" in source_text:
+    elif senario == 'fire':
         # 火災現場
         if "受困" in source_text:
             if "有人" in source_text:
@@ -105,6 +111,15 @@ def respond_decide(source_text):
             # 無法判斷
             return "無法判斷您的狀況，轉由接線生接聽"
         return "火災"
+    elif senario == 'init':
+        if "車禍" in source_text:
+            return "確認案件種類: 車禍"
+        elif "昏迷" in source_text or "昏倒" in source_text:
+            return "確認案件種類: 失去意識"
+        elif "火災" in source_text or "失火" in source_text:
+            return "確認案件種類: 火災"
+        else:
+            return "無法判別案件種類，請重新嘗試"
     else:
         # Unable to decide
         # Refer to 119
